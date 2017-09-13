@@ -2,17 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>03-07 fetch 사용</title>
+  <title>04-09 키코드 수식어</title>
   <style>
       #list  { width: 600px; border:1px solid black; border-collapse:collapse; }
       #list td, #list th { border:1px solid black;  text-align:center; }
       #list > thead > tr { color:yellow; background-color: purple; }
+      [v-cloak] { display: none }
   </style>
 </head>
 <body>
-  <div id="example">
+  <div id="example" v-cloak>
     <p>
-    이름 : <input type="text" v-model="name" placeholder="두자 이상 입력하세요">
+    이름 : <input type="text" v-model="name" @keyup.13="search" placeholder="두자 이상 입력하세요">
     </p>
     <table id="list">
       <thead>
@@ -52,7 +53,15 @@
         }
       },
       methods: {
-        fetchContacts: _.debounce(function() {
+        search: function(e) {
+            var val = e.target.value;
+            if (val.length >= 2) {
+              this.fetchContacts();
+            } else {
+              this.contactlist = [];
+            }
+        },
+        fetchContacts: function() {
           this.contactlist = [];
           this.isProcessing = true;
           var url = "http://sample.bmaster.kro.kr/contacts_long/search/"+ this.name
@@ -68,7 +77,7 @@
               vm.contactlist = [];
               vm.isProcessing = false;
             })
-        }, 300)
+        }
       }
     })
   </script>
