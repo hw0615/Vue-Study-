@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>06-12 props를 이용한 정보 전달</title>
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+</head>
+<template id="listTemplate">
+  <li>{{ myMessage }}</li>
+</template>
+<script type="text/javascript">
+  Vue.component('list-component', {
+    template : '#listTemplate',
+    // props: [ 'myMessage' ]
+    props: {
+      myMessage : { type: String, default: '안녕하세요' },
+      count : { type: Number, required: true },
+      countries : {
+        type: Array,
+        default: function() {
+          return ['대한민국'];
+        }
+      }
+    }
+  })
+</script>
+<body>
+  <div id="app">
+    <ul>
+      <!-- <list-component my-message="Hello"></list-component> 
+      <list-component my-message="씬짜오"></list-component> 
+      <list-component my-message="니하오마"></list-component>  -->
+      
+      <!-- 문자값으로 나오는 숫자값을 정확히 숫자로 전달하기 위해서는 v-bind 속성을 사용하여야 한다. -->
+      <list-component my-message="Hello" :count="100" :countries="['미국', '영국', '호주']"></list-component> 
+      <list-component my-message="씬짜오" :count="21" :countries="['베트남']"></list-component> 
+      <list-component my-message="니하오마" :countries="['중국', '타이완']"></list-component> 
+      <list-component :count="1000"></list-component> 
+    </ul>
+  </div>
+</body>
+<script type="text/javascript">
+Vue.config.devtools = true;
+var v = new Vue({
+    el : '#app'
+})
+</script>
+</html>
